@@ -1,3 +1,10 @@
+
+extern crate wayland_server;
+
 fn main() {
-    println!("Hello, world!");
+    let (_display, mut event_loop) = wayland_server::create_display();
+
+    println!("Hello, wayland!");
+
+    event_loop.run().unwrap();
 }
