@@ -5,3 +5,15 @@ authors = ["papamitra <papamitra@gmail.com>"]
 
 [dependencies]
 wayland-server = "*"
+gl_generator = "0.6"
+nix = "*"
+libloading = "*"
+lazy_static = "0.2"
+
+[dependencies.xcb]
+version = "0.8"
+features = ["xlib_xcb"]
+
+[build-dependencies]
+gl_generator = "0.5"
+
