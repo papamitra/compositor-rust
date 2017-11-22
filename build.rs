@@ -21,7 +21,6 @@ fn main() {
             "EGL_KHR_platform_wayland",
             "EGL_EXT_platform_wayland",
             "EGL_EXT_platform_device",
-            "EGL_WL_bind_wayland_display",
         ],
     ).write_bindings(StructGenerator, &mut file)
         .unwrap();

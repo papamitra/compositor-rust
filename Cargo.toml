@@ -4,7 +4,8 @@ version = "0.1.0"
 authors = ["papamitra <papamitra@gmail.com>"]
 
 [dependencies]
-wayland-server = "*"
+wayland-server = "0.12"
+wayland-sys = "0.12"
 gl_generator = "0.6"
 nix = "*"
 libloading = "*"

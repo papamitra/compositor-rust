@@ -5,17 +5,24 @@ extern crate nix;
 extern crate libloading;
 #[macro_use]
 extern crate lazy_static;
+extern crate wayland_sys;
+
+use std::ffi::CStr;
+
+use wayland_sys::server::*;
 
 mod egl;
 
 fn main() {
-    let (mut display, mut event_loop) = wayland_server::create_display();
+    unsafe {
+        let display = wl_display_create();
 
-    let socket_name = display.add_socket_auto().unwrap();
+        let socket_name_ptr = wl_display_add_socket_auto(display);
+        let socket_name = CStr::from_ptr(socket_name_ptr).to_string_lossy().into_owned();
+        println!("socket_name = {}", socket_name);
 
-    egl::egl_init();
+        egl::egl_init(display);
 
-    println!("Hello, wayland!: {:?}", socket_name);
-
-    event_loop.run().unwrap();
+        wl_display_run(display);
+    }
 }
