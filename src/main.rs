@@ -7,22 +7,17 @@ extern crate libloading;
 extern crate lazy_static;
 extern crate wayland_sys;
 
-use std::ffi::CStr;
-
-use wayland_sys::server::*;
-
 mod egl;
+mod display;
 
 fn main() {
-    unsafe {
-        let display = wl_display_create();
 
-        let socket_name_ptr = wl_display_add_socket_auto(display);
-        let socket_name = CStr::from_ptr(socket_name_ptr).to_string_lossy().into_owned();
-        println!("socket_name = {}", socket_name);
+    let mut display = display::Display::create_display();
 
-        egl::egl_init(display);
+    let socket_name = display.add_socket_auto().unwrap();
+    println!("socket_name = {}", socket_name);
 
-        wl_display_run(display);
-    }
+    egl::egl_init(display.get_raw_display());
+
+    display.run();
 }
