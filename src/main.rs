@@ -6,6 +6,8 @@ extern crate libloading;
 #[macro_use]
 extern crate lazy_static;
 extern crate wayland_sys;
+#[macro_use]
+extern crate error_chain;
 
 mod egl;
 mod display;
