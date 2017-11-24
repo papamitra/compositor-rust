@@ -10,16 +10,15 @@ extern crate wayland_sys;
 extern crate error_chain;
 
 mod egl;
-mod display;
 
 fn main() {
 
-    let mut display = display::Display::create_display();
+    let (mut display, mut event_loop) = wayland_server::create_display();
 
     let socket_name = display.add_socket_auto().unwrap();
-    println!("socket_name = {}", socket_name);
+    println!("socket_name = {:?}", socket_name);
 
     egl::egl_init(display.get_raw_display());
 
-    display.run();
+    event_loop.run().unwrap();
 }
