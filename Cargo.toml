@@ -4,14 +4,14 @@ version = "0.1.0"
 authors = ["papamitra <papamitra@gmail.com>"]
 
 [dependencies]
-wayland-server = "0.12"
-wayland-sys = "0.12"
+wayland-server = { git = "https://github.com/papamitra/wayland-rs", branch = "support-egl-bind" }
+wayland-sys = { git = "https://github.com/papamitra/wayland-rs", branch = "support-egl-bind" }
 gl_generator = "0.6"
 nix = "*"
 libloading = "*"
 lazy_static = "0.2"
 error-chain = "0.11"
-wayland-protocols = { version = "0.12", features = ["unstable_protocols", "server"] }
+wayland-protocols = { git = "https://github.com/papamitra/wayland-rs", branch = "support-egl-bind", features = ["unstable_protocols", "server"] }
 
 [dependencies.xcb]
 version = "0.8"
