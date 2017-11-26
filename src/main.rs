@@ -10,6 +10,7 @@ extern crate wayland_sys;
 extern crate error_chain;
 
 mod egl;
+mod compositor;
 
 fn main() {
 
@@ -19,6 +20,8 @@ fn main() {
     println!("socket_name = {:?}", socket_name);
 
     egl::egl_init(display.get_raw_display());
+
+    compositor::compositor_init(&mut event_loop);
 
     event_loop.run().unwrap();
 }
