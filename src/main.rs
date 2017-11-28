@@ -1,5 +1,6 @@
 
 extern crate wayland_server;
+extern crate wayland_protocols;
 extern crate xcb;
 extern crate nix;
 extern crate libloading;
@@ -11,6 +12,7 @@ extern crate error_chain;
 
 mod egl;
 mod compositor;
+mod zxdg_shell_v6;
 
 fn main() {
 
@@ -22,6 +24,7 @@ fn main() {
     egl::egl_init(display.get_raw_display());
 
     compositor::compositor_init(&mut event_loop);
+    zxdg_shell_v6::zxdg_shell_init(&mut event_loop);
 
     event_loop.run().unwrap();
 }
