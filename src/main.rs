@@ -11,7 +11,8 @@ extern crate wayland_sys;
 extern crate error_chain;
 
 mod egl;
-mod compositor;
+mod wl_compositor;
+mod wl_surface;
 mod zxdg_shell_v6;
 
 fn main() {
@@ -23,7 +24,7 @@ fn main() {
 
     let conn = egl::egl_init(display.get_raw_display()).unwrap();
 
-    compositor::compositor_init(&mut event_loop);
+    wl_compositor::wl_compositor_init(&mut event_loop);
     zxdg_shell_v6::zxdg_shell_init(&mut event_loop);
 
     event_loop.run().unwrap();
