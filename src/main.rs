@@ -14,6 +14,7 @@ mod egl;
 mod wl_compositor;
 mod wl_surface;
 mod zxdg_shell_v6;
+mod zxdg_surface_v6;
 
 fn main() {
 
