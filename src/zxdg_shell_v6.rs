@@ -29,6 +29,8 @@ fn zxdg_shell_implementation() -> zxdg_shell_v6::Implementation<()> {
                 &xdg_surface,
                 zxdg_surface_v6_implementation(),
                 (), None);
+
+            xdg_surface.configure(1);
         },
 
         pong: |_, _, _, _, _sefial| {
