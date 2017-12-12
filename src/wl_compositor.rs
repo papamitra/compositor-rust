@@ -3,6 +3,7 @@ use wayland_server::{EventLoop, EventLoopHandle, Client, Global};
 use wayland_server::protocol::{wl_compositor};
 
 use wl_surface::*;
+use surface::*;
 
 fn wl_compositor_bind(evlh: &mut EventLoopHandle, _: &mut (),
                    _: &Client, compositor: wl_compositor::WlCompositor) {
@@ -20,6 +21,9 @@ fn wl_compositor_implementation() -> wl_compositor::Implementation<()> {
     wl_compositor::Implementation {
         create_surface: |evlh, _, _, _, surface| {
             println!("call create_surface()");
+
+            create_surface(&surface);
+
             evlh.register(
                 &surface,
                 wl_surface_implementation(),

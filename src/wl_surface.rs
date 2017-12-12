@@ -1,5 +1,8 @@
 
 use wayland_server::protocol::{wl_surface};
+use wayland_server::Resource;
+
+use surface::*;
 
 pub fn wl_surface_implementation() -> wl_surface::Implementation<()> {
     wl_surface::Implementation {
@@ -15,8 +18,12 @@ pub fn wl_surface_implementation() -> wl_surface::Implementation<()> {
             println!("call wl_surface.damage()");
         },
 
-        frame: |_evlh, _data, _client, _surface, _callback| {
+        frame: |_evlh, _data, _client, surface, callback| unsafe {
             println!("call wl_surface.frame()");
+
+            let ptr = surface.get_user_data();
+            let surface = &mut *(ptr as *mut Surface);
+            surface.set_callback(callback);
         },
 
         set_opaque_region: |_evlh, _data, _client, _surface, _region| {
@@ -27,8 +34,12 @@ pub fn wl_surface_implementation() -> wl_surface::Implementation<()> {
             println!("call wl_surface.set_input_region()");
         },
 
-        commit: |_, _, _, _| {
+        commit: |_, _, _, surface| unsafe {
             println!("call wl_surface.commit()");
+            let ptr = surface.get_user_data();
+            let surface = &mut *(ptr as *mut Surface);
+
+            surface.callback_done();
         },
 
         set_buffer_transform: |_, _, _, _, _| {
