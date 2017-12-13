@@ -10,8 +10,14 @@ pub fn wl_surface_implementation() -> wl_surface::Implementation<()> {
             println!("call wl_surface.destroy()");
         },
 
-        attach: |_evlh, _data, _client, _surface, _buffer, _x, _y| {
+        attach: |_evlh, _data, _client, surface, mut buffer, _x, _y| unsafe {
             println!("call wl_surface.attach()");
+            let ptr = surface.get_user_data();
+            let surface = &mut *(ptr as *mut Surface);
+
+            if let Some(ref mut buffer) = buffer {
+                surface.set_buffer(buffer.clone_unchecked());
+            }
         },
 
         damage: |_evlh, _data, _client, _surface, _x, _y, _width, _height| {
@@ -40,6 +46,7 @@ pub fn wl_surface_implementation() -> wl_surface::Implementation<()> {
             let surface = &mut *(ptr as *mut Surface);
 
             surface.callback_done();
+            surface.buffer_release();
         },
 
         set_buffer_transform: |_, _, _, _, _| {
