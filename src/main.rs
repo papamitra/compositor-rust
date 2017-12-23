@@ -25,7 +25,8 @@ fn main() {
     let socket_name = display.add_socket_auto().unwrap();
     println!("socket_name = {:?}", socket_name);
 
-    let conn = egl::egl_init(display.get_raw_display()).unwrap();
+    let raw_display = unsafe { display.ptr() };
+    let conn = egl::egl_init(raw_display).unwrap();
 
     wl_compositor::wl_compositor_init(&mut event_loop);
     zxdg_shell_v6::zxdg_shell_init(&mut event_loop);
