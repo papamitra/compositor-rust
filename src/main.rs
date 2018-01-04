@@ -9,8 +9,9 @@ extern crate lazy_static;
 extern crate wayland_sys;
 #[macro_use]
 extern crate error_chain;
+extern crate glium;
 
-mod egl;
+mod backend;
 mod wl_compositor;
 mod wl_surface;
 mod zxdg_shell_v6;
@@ -26,10 +27,13 @@ fn main() {
     println!("socket_name = {:?}", socket_name);
 
     let raw_display = unsafe { display.ptr() };
-    let conn = egl::egl_init(raw_display).unwrap();
+    let backend = backend::Backend::new(raw_display);
 
     wl_compositor::wl_compositor_init(&mut event_loop);
     zxdg_shell_v6::zxdg_shell_init(&mut event_loop);
 
-    event_loop.run().unwrap();
+    loop {
+        event_loop.dispatch(Some(16)).unwrap();
+        display.flush_clients();
+    }
 }
