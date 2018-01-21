@@ -9,6 +9,7 @@ extern crate lazy_static;
 extern crate wayland_sys;
 #[macro_use]
 extern crate error_chain;
+#[macro_use]
 extern crate glium;
 
 mod backend;
@@ -18,6 +19,10 @@ mod zxdg_shell_v6;
 mod zxdg_surface_v6;
 mod zxdg_toplevel_v6;
 mod surface;
+mod context;
+
+use glium::Surface;
+use glium::glutin::{self, GlContext};
 
 fn main() {
 
@@ -27,7 +32,9 @@ fn main() {
     println!("socket_name = {:?}", socket_name);
 
     let raw_display = unsafe { display.ptr() };
-    let backend = backend::Backend::new(raw_display);
+    let backend = backend::Backend::new(raw_display).unwrap();
+
+    let context = context::Context::new(backend).unwrap();
 
     wl_compositor::wl_compositor_init(&mut event_loop);
     zxdg_shell_v6::zxdg_shell_init(&mut event_loop);
@@ -35,5 +42,7 @@ fn main() {
     loop {
         event_loop.dispatch(Some(16)).unwrap();
         display.flush_clients();
+
+        context.redraw();
     }
 }
